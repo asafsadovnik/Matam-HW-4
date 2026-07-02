@@ -58,5 +58,4 @@ public:
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const = 0;
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const = 0;
 
-    // Hint: you will likely need Create*Action methods for import/export as well.
 };
