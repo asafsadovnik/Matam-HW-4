@@ -1,0 +1,5 @@
+create directory / docs
+create textfile /docs a.txt
+list /
+list /docs
+exit

@@ -1,0 +1,22 @@
+fileSystem cmd> 
+--- Action: create executed ---
+fileSystem cmd> 
+--- Action: write executed ---
+fileSystem cmd> 
+--- Action: write executed ---
+fileSystem cmd> 
+--- Action: write executed ---
+fileSystem cmd> 
+--- Action: write executed ---
+fileSystem cmd> 
+the cat sat
+the cat slept
+--- Action: search executed ---
+fileSystem cmd> 
+the cat sat
+the dog ran
+the cat slept
+--- Action: search executed ---
+fileSystem cmd> 
+--- Action: search executed ---
+fileSystem cmd> 

@@ -1,0 +1,5 @@
+create textfile / f.txt
+write / f.txt line one
+write / f.txt line two
+read / f.txt
+exit

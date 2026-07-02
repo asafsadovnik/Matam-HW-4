@@ -1,0 +1,11 @@
+fileSystem cmd> 
+--- Action: create executed ---
+fileSystem cmd> 
+--- Action: create executed ---
+fileSystem cmd> 
+ - docs
+--- Action: list executed ---
+fileSystem cmd> 
+ - a.txt
+--- Action: list executed ---
+fileSystem cmd> 
