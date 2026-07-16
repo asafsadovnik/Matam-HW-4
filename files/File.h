@@ -19,20 +19,30 @@ feel free to add more forward declarations if you need them or change existing o
 //
 // Tip: think about what information each Create*Action must hand to its Action.
 // ─────────────────────────────────────────────────────────────────────────────
+class Directory; //Forward declaration
 
-struct ReadRequest
-{
-    // TODO: add the fields your read actions need.
+enum class CommandType { CREATE , DELETE , LIST , READ , WRITE , SEARCH };
+
+struct BasicRequest {
+    std::string DirPath;
+    std::string FileName;
 };
 
-struct WriteRequest
-{
-    // TODO: add the fields your write/create/delete actions need.
+struct ReadRequest : public BasicRequest {
+    CommandType command;
 };
 
-struct SearchRequest
+struct WriteRequest : public BasicRequest
 {
-    // TODO: add the fields your search actions need.
+    CommandType command;
+    std::string type;
+    std::string TargetPath;
+    std::vector<std::string> Content;
+};
+
+struct SearchRequest : public BasicRequest
+{
+    std::string word;
 };
 
 
@@ -48,14 +58,24 @@ struct SearchRequest
 // ─────────────────────────────────────────────────────────────────────────────
 class File
 {
-public:
+
+protected:
+    Directory* parentDirectory;
+    std::string name;
+
+    public:
+    File(const std::string& name , Directory* parentDir) : name(name) ,
+        parentDirectory(parentDir) {}
+
     virtual ~File() = default;
 
     std::string getName() const;
+    Directory* getParent() const;
 
     // Each concrete File builds the Action appropriate for its own type.
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const = 0;
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const = 0;
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const = 0;
+
 
 };

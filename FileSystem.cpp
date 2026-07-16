@@ -2,18 +2,20 @@
 #include "Utilities.h"
 #include "Action.h"
 #include "HelpAction.h"
+#include "Directory.h"
+#include "TextFile.h"
+#include "SymbolicLink.h"
 // TODO: include the headers of the files/actions you implement
 //       (Directory.h, TextFile.h, SymbolicLink.h, FileFactory.h, your actions, ...)
 #include <iostream>
+#include <string>
 #include <memory>
 #include <stdexcept>
 
-// ── Singleton ────────────────────────────────────────────────────────────────
 
 FileSystem::FileSystem()
 {
-    // TODO: initialize `root` as the root Directory "/" (it has no parent).
-    // e.g.:  root = std::make_shared<Directory>("/", nullptr);
+    rootDirectory = std::make_shared<Directory>("/", nullptr);
 }
 
 FileSystem::~FileSystem() = default;
@@ -24,7 +26,27 @@ FileSystem& FileSystem::getInstance()
     return instance;
 }
 
-// ── Command handlers ─────────────────────────────────────────────────────────
+File* FileSystem::getFile(const std::string& path) const {
+    if (path == "/") {
+        return rootDirectory.get();
+    }
+
+    std::vector<std::string> pathParts = Utilities::split(path);
+    File* currentFile = rootDirectory.get();
+    for (std::string& part : pathParts) {
+        if (part.empty()) continue;
+        Directory* currentDir = dynamic_cast<Directory *>(currentFile);
+        if (!currentDir) {
+            return nullptr;
+        }
+        currentFile = currentDir->getChild(part);
+        if (!currentFile) {
+            return nullptr;
+        }
+}
+    return currentFile;
+}
+
 
 std::unique_ptr<Action> FileSystem::handleHelp()
 {

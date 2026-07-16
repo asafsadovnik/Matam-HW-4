@@ -1,5 +1,6 @@
 #pragma once
 #include "File.h"
+#include "Utilities.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -17,7 +18,8 @@
 class TextFile : public File
 {
 public:
-    virtual ~TextFile() = default;
+    TextFile(const std::string& name, Directory* parent) : File(name , parent) {}
+    ~TextFile() override = default;
 
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const override;
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const override;
@@ -29,7 +31,6 @@ public:
 
 
 private:
-    // TODO: decide which data members a TextFile needs
-    //       (e.g. its name, its parent, and where it stores its lines).
+    std::vector<std::string> fileContent;
 };
 

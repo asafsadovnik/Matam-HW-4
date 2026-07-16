@@ -16,18 +16,23 @@
 // ─────────────────────────────────────────────────────────────────────────────
 class FileSystem
 {
-    // Singleton - private constructor
+private:
+    std::shared_ptr<Directory> rootDirectory;
+    std::vector<std::string> SuccsCmndHistory;
+    // ─── Singleton constrainers ──────────────────────────────────────────────
     FileSystem();
-
-    // Delete copy constructor and assignment operator
     FileSystem(const FileSystem&) = delete;
     FileSystem& operator=(const FileSystem&) = delete;
 
     // ── Command handlers ─────────────────────────────────────────────────────
-    // Provided example:
     std::unique_ptr<Action> handleHelp();
-
-    // TODO: add the handlers for the remaining commands, e.g.:
+    std::unique_ptr<Action> handleRead(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleList(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleWrite(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleCreate(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleDelete(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleSearch(const std::vector<std::string>& args);
+    void handleHistory(const std::vector<std::string>& args);
 
 public:
     ~FileSystem();
@@ -37,4 +42,8 @@ public:
 
     void run(); // interactive shell
 
-};
+    File* getFile(const std::string& path) const;
+
+    Directory* getRoot() const { return rootDirectory.get(); }
+
+}
