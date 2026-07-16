@@ -6,8 +6,10 @@
 
 
 class DeleteAction : public Action {
+private:
+    std::string& fileName;
 public:
-    DeleteAction(const std::string& dirPath, std::string& filename);
+    DeleteAction(const std::string& fileType, const std::string& dirPath, std::string& filename);
     ~DeleteAction() override = default;
     void execute() override;
 };
