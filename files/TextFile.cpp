@@ -1,5 +1,5 @@
 #include "TextFile.h"
-// Add Actions (#include "[name of Action]")
+#include "
 
 std::unique_ptr<Action> TextFile::CreateReadAction(ReadRequest& request) const {
     switch (request.command) {
