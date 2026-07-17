@@ -46,4 +46,6 @@ public:
 
     Directory* getRoot() const { return rootDirectory.get(); }
 
-}
+    std::string getFilePath(File* file) const;
+
+};

@@ -47,6 +47,25 @@ File* FileSystem::getFile(const std::string& path) const {
     return currentFile;
 }
 
+std::string FileSystem::getFilePath(File* file) const {
+    if (file == nullptr) { // If file is not exist
+        return ("File was not founded");
+    }
+
+    if (file->getParent() == nullptr) { // If file is root (means parent == nullptr)
+        return "/";
+    }
+
+    std::string currentPath = "";
+    File* currentFile = file->getParent();
+
+    while (currentFile->getParent() != nullptr) {
+        currentPath = "/" + currentFile->getName() + currentPath;
+        currentFile = currentFile->getParent();
+    }
+    return currentPath;
+}
+
 
 std::unique_ptr<Action> FileSystem::handleHelp()
 {
