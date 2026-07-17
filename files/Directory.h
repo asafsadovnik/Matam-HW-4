@@ -4,11 +4,21 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "Action.h"
+#include "CreateAction.h"
+#include "DeleteAction.h"
+#include "ExportAction.h"
+#include "HelpAction.h"
+#include "ImportAction.h"
+#include "ListAction.h"
+#include "ReadAction.h"
+#include "SearchAction.h"
+#include "WriteAction.h"
 
 class Directory : public File
 {
 public:
-    virtual Directory(const std::string& name , Directory* parent) : File(name , parent) {}
+    Directory(const std::string& name , Directory* parent) : File(name , parent) {}
     virtual ~Directory() = default;
 
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const override;

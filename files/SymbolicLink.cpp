@@ -1,7 +1,16 @@
 #include "SymbolicLink.h"
 #include "Utilities.h"
 #include "FileSystem.h"
-// Add Action!!
+#include "Action.h"
+#include "CreateAction.h"
+#include "DeleteAction.h"
+#include "ExportAction.h"
+#include "HelpAction.h"
+#include "ImportAction.h"
+#include "ListAction.h"
+#include "ReadAction.h"
+#include "SearchAction.h"
+#include "WriteAction.h"
 
 File *SymbolicLink::getTargetFile() const {
     return FileSystem::getInstance().getFile(target_path);

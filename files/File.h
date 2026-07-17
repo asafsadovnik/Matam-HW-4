@@ -1,5 +1,14 @@
 #pragma once
 #include "Action.h"
+#include "CreateAction.h"
+#include "DeleteAction.h"
+#include "ExportAction.h"
+#include "HelpAction.h"
+#include "ImportAction.h"
+#include "ListAction.h"
+#include "ReadAction.h"
+#include "SearchAction.h"
+#include "WriteAction.h"
 #include <string>
 #include <memory>
 #include <vector>

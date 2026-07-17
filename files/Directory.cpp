@@ -1,5 +1,16 @@
 #include "Directory.h"
-// Add Actions ("#include [Action name]")
+#include "Action.h"
+#include "CreateAction.h"
+#include "DeleteAction.h"
+#include "ExportAction.h"
+#include "HelpAction.h"
+#include "ImportAction.h"
+#include "ListAction.h"
+#include "ReadAction.h"
+#include "SearchAction.h"
+#include "WriteAction.h"
+
+
 
 std::unique_ptr<Action> Directory::CreateReadAction(ReadRequest& request) const  {
     switch (request.command) {
