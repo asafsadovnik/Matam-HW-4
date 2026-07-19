@@ -7,10 +7,11 @@
 
 class CreateAction : public Action {
 private:
-    std::string& fileName;
-    std::string& targetPath;
+    std::string fileName;
+    std::string fileType;
+    std::string targetPath;
 public:
-    CreateAction(const std::string& type, const std::string& dirPath, const std::string& fileName, const std::string& targetPath = "");
+    CreateAction(const WriteRequest&);
     ~CreateAction() override = default;
-    void execute() override;
+    void execute() const override;
 };

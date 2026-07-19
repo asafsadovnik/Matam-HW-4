@@ -7,9 +7,9 @@
 
 class DeleteAction : public Action {
 private:
-    std::string& fileName;
+    std::string fileName;
 public:
-    DeleteAction(const std::string& fileType, const std::string& dirPath, std::string& filename);
+    DeleteAction(const WriteRequest&);
     ~DeleteAction() override = default;
-    void execute() override;
+    void execute() const override;
 };

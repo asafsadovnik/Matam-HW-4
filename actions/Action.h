@@ -12,13 +12,12 @@
 
 class Action { //virtual class Action
 protected:
-    std::string fileType;
     std::string dirPath;
 
-    std::shared_ptr<TextFile> resolveSymLink(const std::shared_ptr<SymbolicLink>& link) const; //check if symlink good & return textfile
+    TextFile* resolveSymLink(const SymbolicLink* link) const; //check if symlink good & return textfile
 
 public:
-    Action(const std::string& fileType, const std::string& dirPath);
+    Action(const BasicRequest&);
     virtual void execute() const = 0;
     virtual ~Action() = default;
 };
