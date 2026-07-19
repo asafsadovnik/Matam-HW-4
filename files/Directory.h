@@ -26,7 +26,7 @@ public:
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const override;
 
     void  addChild(std::shared_ptr<File> newFile);
-    void removeChild(std::string& fileName);
+    void removeChild(const std::string& fileName);
     File* getChild(const std::string& fileName) const;
     const std::vector<std::shared_ptr<File>>& getChildes() const
     { return directoryChildren; }

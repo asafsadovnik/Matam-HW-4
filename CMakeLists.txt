@@ -20,4 +20,14 @@ add_executable(HW4_2526B
         Utilities.h
         files/SymbolicLink.cpp
         actions/Action.cpp
-        files/TextFile.cpp)
+        files/TextFile.cpp
+        actions/WriteAction.cpp
+        actions/SearchAction.cpp
+        actions/ReadAction.cpp
+        actions/ListAction.cpp
+        actions/ImportAction.cpp
+        actions/ExportAction.cpp
+        actions/DeleteAction.cpp
+        actions/CreateAction.cpp
+        files/Directory.cpp
+        actions/ErrorAction.h)

@@ -65,21 +65,19 @@ struct SearchRequest : public BasicRequest
 // This is a pure interface: it is up to YOU to decide the data members and
 // constructors of your concrete files.
 // ─────────────────────────────────────────────────────────────────────────────
-class File
-{
-
+class File {
 protected:
     Directory* parentDirectory;
     std::string name;
 
-    public:
+public:
     File(const std::string& name , Directory* parentDir) : name(name) ,
         parentDirectory(parentDir) {}
 
     virtual ~File() = default;
 
-    std::string getName() const;
-    Directory* getParent() const;
+    std::string getName() const {return name ; }
+    Directory* getParent() const {return parentDirectory ; }
 
     // Each concrete File builds the Action appropriate for its own type.
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const = 0;
