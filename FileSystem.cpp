@@ -1,7 +1,16 @@
 #include "FileSystem.h"
 #include "Utilities.h"
 #include "Action.h"
+#include "CreateAction.h"
+#include "DeleteAction.h"
+#include "ExportAction.h"
 #include "HelpAction.h"
+#include "ImportAction.h"
+#include "ListAction.h"
+#include "ReadAction.h"
+#include "SearchAction.h"
+#include "WriteAction.h"
+#include "ErrorAction.h"
 #include "Directory.h"
 #include "TextFile.h"
 #include "SymbolicLink.h"
@@ -52,30 +61,207 @@ std::string FileSystem::getFilePath(File* file) const {
         return ("File was not founded");
     }
 
-    if (file->getParent() == nullptr) { // If file is root (means parent == nullptr)
-        return "/";
-    }
-
     std::string currentPath = "";
     File* currentFile = file->getParent();
 
-    while (currentFile->getParent() != nullptr) {
+    while (currentFile->getParent() != nullptr && currentFile != nullptr) {
         currentPath = "/" + currentFile->getName() + currentPath;
         currentFile = currentFile->getParent();
     }
-    return currentPath;
+    return currentPath.empty() ? "/" : currentPath ;
 }
 
+// ── handles ─────────────────────────────────────────────────────────────
 
 std::unique_ptr<Action> FileSystem::handleHelp()
 {
     return std::make_unique<HelpAction>();
 }
 
-// TODO: implement the remaining command handlers (create, list, read, write,
-//       delete, search, import, export). Each one should validate its
-//       arguments, locate the relevant file/directory, build the matching
-//       request, and return the Action produced by the file's Create*Action.
+std::unique_ptr<Action> FileSystem::handleRead(const std::vector<std::string> &args) {
+    if (args.size() != 3) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+    std::string dirPath = args[1];
+    std::string fileName = args[2];
+
+    File* file = getFile(dirPath);
+
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    File* targetFile = dir->getChild(fileName);
+    if (targetFile == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    ReadRequest request;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
+    request.command = CommandType::READ;
+    return targetFile->CreateReadAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleList(const std::vector<std::string> &args) {
+    if (args.size() != 2) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+    std::string dirPath = args[1];
+
+    File* file = getFile(dirPath);
+
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
+    }
+
+    ReadRequest request;
+    request.DirPath = dirPath;
+    request.FileName = "";
+    request.command = CommandType::LIST;
+    return dir->CreateReadAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleWrite(const std::vector<std::string> &args) {
+    if (args.size() < 3) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+    std::string dirPath = args[1];
+    std::string fileName = args[2];
+
+    File* file = getFile(dirPath);
+
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    File* targetFile = dir->getChild(fileName);
+    if (targetFile == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    std::string newLine = Utilities::joinArgs(args.begin() + 3 , args.end());
+
+    WriteRequest request;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
+    request.command = CommandType::WRITE;
+    request.Content.push_back(newLine);
+    return targetFile->CreateWriteAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleCreate(const std::vector<std::string> &args) {
+    if (args. size() < 4) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+
+    std::string type = args[1];
+    std::string dirPath = args[2];
+    std::string fileName = args[3];
+
+    if (type == "symlink") {
+        if (args.size() != 5) {
+            return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+        }
+    } else if (type == "textfile" || type == "directory") {
+        if (args.size() != 4) {
+            return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+            }
+        }
+    else {
+        return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
+    }
+
+    File* file = getFile(dirPath);
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    WriteRequest request;
+    request.type = type;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
+    request.command = CommandType::CREATE;
+
+    if (type == "symlink") {
+        request.TargetPath = args[4];
+    }
+
+    return dir->CreateWriteAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleDelete(const std::vector<std::string> &args) {
+    if (args.size() != 2) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+     std::string targetPath = args[1];
+
+    File* targetFile = getFile(targetPath);
+    if (targetFile == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    WriteRequest request;
+    request.TargetPath = targetPath;
+    request.command = CommandType::DELETE;
+
+    return targetFile->CreateWriteAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleSearch(const std::vector<std::string> &args) {
+    if (args.size() != 3) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+
+    std::string dirPath = args[1];
+    std::string word = args[2];
+
+    File* file = getFile(dirPath);
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    SearchRequest request;
+    request.DirPath = dirPath;
+    request.word = word;
+    request.FileName = "";
+
+    return dir->CreateSearchAction(request);
+}
+
+void FileSystem::handleHistory(const std::vector<std::string> &args) {
+    if (args.size() != 1) {
+        throw std::runtime_error(Utilities::commandErrorMsg());
+    }
+
+    Utilities::printFileContent(SuccsCmndHistory);
+}
+
 
 // ── Main CLI loop ─────────────────────────────────────────────────────────────
 
@@ -106,7 +292,34 @@ void FileSystem::run()
             {
                 action = handleHelp();
             }
-            // TODO: add the other commands here, e.g.:
+            else if (cmd == "create")
+            {
+                action = handleCreate(args);
+            }
+            else if (cmd == "delete")
+            {
+                action = handleDelete(args);
+            }
+            else if (cmd == "list")
+            {
+                action = handleList(args);
+            }
+            else if (cmd == "read")
+            {
+                action = handleRead(args);
+            }
+            else if (cmd == "write")
+            {
+                action = handleWrite(args);
+            }
+            else if (cmd == "search")
+            {
+                action = handleSearch(args);
+            }
+            else if (cmd == "history")
+            {
+                handleHistory(args);
+            }
             else
             {
                 throw std::runtime_error(Utilities::commandErrorMsg());
@@ -116,8 +329,14 @@ void FileSystem::run()
             {
                 action->execute();
                 Utilities::printActionExecuted(cmd);
-                // TODO: record executed commands in `history` (help/history are
-                //       usually NOT recorded).
+
+                if (cmd != "help") {
+                    SuccsCmndHistory.push_back(line);
+                }
+            } else if (cmd == "history") {
+                handleHistory(args);
+                Utilities::printActionExecuted(cmd);
+                SuccsCmndHistory.push_back(line);
             }
         }
         catch (const std::exception& e)
