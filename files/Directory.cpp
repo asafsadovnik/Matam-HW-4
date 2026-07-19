@@ -10,7 +10,6 @@ std::unique_ptr<Action> Directory::CreateReadAction(ReadRequest& request) const 
         default:
             return nullptr;
     }
-
 }
 
 std::unique_ptr<Action> Directory::CreateWriteAction(WriteRequest &request) const {
