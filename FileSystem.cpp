@@ -34,12 +34,16 @@ FileSystem& FileSystem::getInstance()
     static FileSystem instance;
     return instance;
 }
-
+// A method that gets a path to a file (string) and return it's ptr (if exists)
 File* FileSystem::getFile(const std::string& path) const {
-    if (path == "/") {
+    if (path == "/") { // If path is "/" return the root
         return rootDirectory.get();
     }
 
+    // Split the path to parts. Run a loop from the root Directory -
+    // on each iteration - find the next part in the current directory. if
+    // is not exist return null_ptr. If exist - get into the directory and do another
+    // iteration on the next part.
     std::vector<std::string> pathParts = Utilities::split(path);
     File* currentFile = rootDirectory.get();
     for (std::string& part : pathParts) {
@@ -55,19 +59,20 @@ File* FileSystem::getFile(const std::string& path) const {
 }
     return currentFile;
 }
-
+// A method that gets a ptr to a file and return the path to the file (only parents)
 std::string FileSystem::getFilePath(File* file) const {
     if (file == nullptr) { // If file is not exist
         return ("File was not founded");
     }
 
-    std::string currentPath = "";
+    std::string currentPath = ""; // Create a string that will contain the path
     File* currentFile = file->getParent();
 
     while (currentFile->getParent() != nullptr && currentFile != nullptr) {
         currentPath = "/" + currentFile->getName() + currentPath;
         currentFile = currentFile->getParent();
     }
+    // If the file is the root or one of its children - return "/", else return the path
     return currentPath.empty() ? "/" : currentPath ;
 }
 
@@ -211,18 +216,29 @@ std::unique_ptr<Action> FileSystem::handleCreate(const std::vector<std::string> 
 }
 
 std::unique_ptr<Action> FileSystem::handleDelete(const std::vector<std::string> &args) {
-    if (args.size() != 2) {
+    if (args.size() != 3) {
         return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
     }
-     std::string targetPath = args[1];
+    std::string dirPath = args[1];
+    std::string fileName = args[2];
 
-    File* targetFile = getFile(targetPath);
+    File* file = getFile(dirPath);
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+    Directory* dir = dynamic_cast<Directory *>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    File* targetFile = dir->getChild(fileName);
     if (targetFile == nullptr) {
         return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
     }
 
     WriteRequest request;
-    request.TargetPath = targetPath;
+    request.FileName = fileName;
+    request.DirPath = dirPath;
     request.command = CommandType::DELETE;
 
     return targetFile->CreateWriteAction(request);
