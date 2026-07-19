@@ -5,7 +5,10 @@
 #include <string>
 #include <vector>
 
+#include "SymbolicLink.h"
 
+class SymbolicLink;
+class Directory;
 // ─────────────────────────────────────────────────────────────────────────────
 // FileSystem — the Singleton front-end for the whole virtual FS.
 //
@@ -47,5 +50,7 @@ public:
     Directory* getRoot() const { return rootDirectory.get(); }
 
     std::string getFilePath(File* file) const;
+
+    bool isBrokenLynk(SymbolicLink* link);
 
 };

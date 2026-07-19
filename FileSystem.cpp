@@ -76,6 +76,26 @@ std::string FileSystem::getFilePath(File* file) const {
     return currentPath.empty() ? "/" : currentPath ;
 }
 
+bool FileSystem::isBrokenLynk(SymbolicLink* link) {
+    if (link == nullptr) {
+        return true;
+    }
+
+    std::string targetPath = getFilePath(link);
+
+    File* targetFile = getFile(targetPath);
+
+    if (targetFile == nullptr) {
+        return true;
+    }
+
+    if (targetFile->isDirectory()) {
+        return true;
+    }
+
+    return false;
+}
+
 // ── handles ─────────────────────────────────────────────────────────────
 
 std::unique_ptr<Action> FileSystem::handleHelp()
@@ -125,8 +145,15 @@ std::unique_ptr<Action> FileSystem::handleList(const std::vector<std::string> &a
         return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
     }
 
-    Directory* dir = dynamic_cast<Directory *>(file);
-    if (dir == nullptr) {
+    SymbolicLink* symLink = dynamic_cast<SymbolicLink *>(file);
+    if (symLink != nullptr) {
+        if (isBrokenLynk(symLink)) {
+            return std::make_unique<ErrorAction>(Utilities::BrokenLinkMsg());
+        }
+        return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
+    }
+
+    if (!file->isDirectory()) {
         return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
     }
 
@@ -134,7 +161,7 @@ std::unique_ptr<Action> FileSystem::handleList(const std::vector<std::string> &a
     request.DirPath = dirPath;
     request.FileName = "";
     request.command = CommandType::LIST;
-    return dir->CreateReadAction(request);
+    return file->CreateReadAction(request);
 }
 
 std::unique_ptr<Action> FileSystem::handleWrite(const std::vector<std::string> &args) {

@@ -30,6 +30,7 @@ feel free to add more forward declarations if you need them or change existing o
 // ─────────────────────────────────────────────────────────────────────────────
 class Directory; //Forward declaration
 
+
 enum class CommandType { CREATE , DELETE , LIST , READ , WRITE , SEARCH };
 
 struct BasicRequest {
@@ -78,6 +79,10 @@ public:
 
     std::string getName() const {return name ; }
     Directory* getParent() const {return parentDirectory ; }
+
+    virtual bool isDirectory() const {
+        return false;
+    }
 
     // Each concrete File builds the Action appropriate for its own type.
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const = 0;
