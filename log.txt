@@ -1,0 +1,319 @@
+*   commit 4f9a0431427f159ec0dd6e717c58129d0e11193f
+|\  Merge: 412c710 b908cb7
+| | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | Date:   Mon Jul 20 22:26:26 2026 +0300
+| | 
+| |     Merge branch 'asaf-actions' into master, resolve conflicts, and pass all system tests
+| | 
+| * commit b908cb722c2f538d74faed2d4954335650895b0c
+| | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | Date:   Mon Jul 20 21:54:56 2026 +0300
+| | 
+| |     Finish all implementations and make the project pass the tests
+| | 
+| |  .idea/editor.xml         |   1 +
+| |  CMakeLists.txt           |   2 +-
+| |  FileSystem.cpp           | 110 ++++++++++++++++++++++++++++++++++++-------
+| |  FileSystem.h             |   5 +-
+| |  actions/Action.cpp       |   1 +
+| |  actions/Action.h         |   6 +--
+| |  actions/DeleteAction.cpp |  14 +++++-
+| |  actions/ErrorAction.h    |   2 +-
+| |  actions/ExportAction.cpp |  40 ++++++++++++++++
+| |  actions/ExportAction.h   |   7 ++-
+| |  actions/HistoryAction.h  |   2 +-
+| |  actions/ImportAction.cpp |  48 ++++++++++++++++++-
+| |  actions/ImportAction.h   |   8 +++-
+| |  actions/ListAction.cpp   |   2 +
+| |  actions/ReadAction.cpp   |   1 +
+| |  actions/SearchAction.h   |   1 +
+| |  actions/WriteAction.h    |   1 +
+| |  files/Directory.cpp      |   9 ++++
+| |  files/Directory.h        |  12 +----
+| |  files/File.h             |  15 ++----
+| |  files/SymbolicLink.cpp   |   8 ++++
+| |  files/SymbolicLink.h     |   4 +-
+| |  files/TextFile.cpp       |   8 ++++
+| |  files/TextFile.h         |   3 +-
+| |  24 files changed, 254 insertions(+), 56 deletions(-)
+| | 
+| * commit c057f0a20473faea624314bdf4c5fad92c9a59d9
+| | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | Date:   Mon Jul 20 14:23:31 2026 +0300
+| | 
+| |     add more Action implementations
+| | 
+| |  CMakeLists.txt           |  5 +++--
+| |  actions/Action.h         |  1 +
+| |  actions/ErrorAction.h    |  2 +-
+| |  actions/ExportAction.cpp |  3 ++-
+| |  actions/HistoryAction.h  | 18 +++++++++++++++
+| |  actions/SearchAction.cpp | 52 +++++++++++++++++++++++++++++++++-----------
+| |  actions/SearchAction.h   |  1 +
+| |  actions/WriteAction.cpp  | 33 +++++++++++++++++++++++++++-
+| |  actions/WriteAction.h    |  6 ++---
+| |  9 files changed, 100 insertions(+), 21 deletions(-)
+| | 
+| * commit 7888240e9f64f6b3912e8db77cd750dc53ff03d7
+| | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | Date:   Mon Jul 20 00:51:06 2026 +0300
+| | 
+| |     Add Action Implementations
+| | 
+| |  .idea/HW4.iml            |  2 ++
+| |  .idea/modules.xml        |  1 +
+| |  actions/Action.cpp       | 11 ++++-------
+| |  actions/Action.h         |  5 ++---
+| |  actions/CreateAction.cpp | 39 ++++++++++++++++++++++++++++++++++++++-
+| |  actions/CreateAction.h   |  9 +++++----
+| |  actions/DeleteAction.cpp | 29 ++++++++++++++++++++++++++++-
+| |  actions/DeleteAction.h   |  6 +++---
+| |  actions/ListAction.cpp   | 32 +++++++++++++++++++++++++++++++-
+| |  actions/ListAction.h     |  8 ++++++--
+| |  actions/ReadAction.cpp   | 25 ++++++++++++++++---------
+| |  actions/ReadAction.h     |  4 ++--
+| |  actions/SearchAction.cpp | 41 ++++++++++++++++++++++++++++++++++++++++-
+| |  actions/SearchAction.h   |  8 ++++----
+| |  14 files changed, 182 insertions(+), 38 deletions(-)
+| |   
+| *   commit 89204b0942b05e1e23c1e1fd7794817b8b7de42e
+| |\  Merge: 3e405e2 bfa4988
+| | | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | | Date:   Sun Jul 19 15:22:45 2026 +0300
+| | | 
+| | |     Merge branch 'amit-File' of https://github.com/asafsadovnik/Matam-HW-4 into asaf-actions
+| | | 
+| * | commit 3e405e2151295f8582e1e9dbb75a4ac5e9f642c9
+| | | Author: asafsadovnik <asaf.i.cool@gmail.com>
+| | | Date:   Fri Jul 17 16:51:24 2026 +0300
+| | | 
+| | |     add resolveSymlink in action and half of read action execute logic
+| | | 
+| | |  actions/Action.cpp     |  9 +++++++++
+| | |  actions/Action.h       |  7 +++++++
+| | |  actions/ReadAction.cpp | 10 ++++++++++
+| | |  3 files changed, 26 insertions(+)
+| | | 
+* | | commit 412c71050609509a908562fa3e4ed11edc107cfc
+| | | Author: Amit <amitash1412@gmail.com>
+| | | Date:   Mon Jul 20 01:10:53 2026 +0300
+| | | 
+| | |     Fix handleList, add IsBroken method that checks if symlink is valid, add virtual method IsDirectory
+| | | 
+| | |  FileSystem.cpp    | 33 ++++++++++++++++++++++++++++++---
+| | |  FileSystem.h      |  5 +++++
+| | |  files/Directory.h |  3 +++
+| | |  files/File.h      |  5 +++++
+| | |  4 files changed, 43 insertions(+), 3 deletions(-)
+| | | 
+* | | commit ccef6907aaf797108269e9425fe94c4f2440e2f7
+| | | Author: Amit <amitash1412@gmail.com>
+| | | Date:   Sun Jul 19 23:54:43 2026 +0300
+| | | 
+| | |     Fix handleDelte
+| | | 
+| | |  FileSystem.cpp | 32 ++++++++++++++++++++++++--------
+| | |  1 file changed, 24 insertions(+), 8 deletions(-)
+| | |   
+* | |   commit f12946e1fb97bb5066cf2fcbd173ecbee085e60b
+|\ \ \  Merge: c8c15dc d97a84c
+| | | | Author: Amit <amitash1412@gmail.com>
+| | | | Date:   Sun Jul 19 18:08:23 2026 +0300
+| | | | 
+| | | |     Merge amit-File with complete FileSystem implementation
+| | | | 
+| * | | commit d97a84c8e9e4ececbbcde5cde4fd1297ff51aaf2
+| | |/  Author: Amit <amitash1412@gmail.com>
+| |/|   Date:   Sun Jul 19 15:38:14 2026 +0300
+| | |   
+| | |       Update File.h, SymbolicLink, Directory and FileText. Add all handles on FileSystem. Add ErrorAction
+| | |   
+| | |    .gitignore | 1 +
+| | |    1 file changed, 1 insertion(+)
+| | | 
+| * | commit bfa49889383829d304d1b8b102a94bad52dd662e
+| | | Author: Amit <amitash1412@gmail.com>
+| | | Date:   Sun Jul 19 15:18:08 2026 +0300
+| | | 
+| | |     Update File.h, SymbolicLink, Directory and FileText. Add all handles on FileSystem. Add ErrorAction
+| | | 
+| | |  CMakeLists.txt         |  12 ++-
+| | |  FileSystem.cpp         | 245 ++++++++++++++++++++++++++++++++++++++++---
+| | |  files/Directory.cpp    |  16 +--
+| | |  files/Directory.h      |   2 +-
+| | |  files/File.h           |  10 +-
+| | |  files/SymbolicLink.cpp |  30 ++++--
+| | |  files/SymbolicLink.h   |   7 +-
+| | |  files/TextFile.cpp     |  20 +++-
+| | |  8 files changed, 298 insertions(+), 44 deletions(-)
+| | | 
+| * | commit cb5a395e86aaa31a09397d32b07fd20f707c0d03
+| | | Author: Amit <amitash1412@gmail.com>
+| | | Date:   Sun Jul 19 11:59:39 2026 +0300
+| | | 
+| | |     Update File.h, SymbolicLink, Directory and FileText. Add all handles on FileSystem. Add ErrorAction
+| | | 
+| | |  actions/ErrorAction.h | 15 +++++++++++++++
+| | |  1 file changed, 15 insertions(+)
+| | | 
+| * | commit 4ae786912ffad41de0c827dbcd76f2d68dbabc6c
+| | | Author: Amit <amitash1412@gmail.com>
+| | | Date:   Fri Jul 17 16:57:53 2026 +0300
+| | | 
+| | |     Add different methods
+| | | 
+| | |  .idea/.gitignore       |   8 +
+| | |  .idea/.name            |   1 +
+| | |  .idea/Matam-HW-4.iml   |   2 +
+| | |  .idea/editor.xml       | 344 +++++++++++++++++++++++++++++++++++++++++++
+| | |  .idea/misc.xml         |   7 +
+| | |  .idea/modules.xml      |   8 +
+| | |  .idea/vcs.xml          |   6 +
+| | |  CMakeLists.txt         |  23 +++
+| | |  files/Directory.cpp    |  13 +-
+| | |  files/Directory.h      |  12 +-
+| | |  files/File.h           |   9 ++
+| | |  files/SymbolicLink.cpp |  11 +-
+| | |  files/TextFile.cpp     |   2 +-
+| | |  13 files changed, 442 insertions(+), 4 deletions(-)
+| | | 
+| * | commit 9903c40e3fa77075c0bb829dc82f05da2f15372d
+| |/  Author: Amit <amitash1412@gmail.com>
+| |   Date:   Fri Jul 17 16:51:31 2026 +0300
+| |   
+| |       Add getFilePath method
+| |   
+| |    FileSystem.cpp     | 19 +++++++++++++++++++
+| |    FileSystem.h       |  4 +++-
+| |    files/TextFile.cpp |  2 +-
+| |    3 files changed, 23 insertions(+), 2 deletions(-)
+| | 
+* | commit c8c15dc2e5d3ce6ef5dd1220308ff1eec29fa5ad
+| | Author: Amit <amitash1412@gmail.com>
+| | Date:   Sun Jul 19 17:53:57 2026 +0300
+| | 
+| |     Update removeChild signature with const in Directory.cpp
+| | 
+| |  files/Directory.cpp | 1 -
+| |  1 file changed, 1 deletion(-)
+| | 
+* | commit cb24ea7c19ee543bf4b0aedeccdcca2d5b729c8f
+| | Author: Amit <amitash1412@gmail.com>
+| | Date:   Sun Jul 19 15:38:14 2026 +0300
+| | 
+| |     Update File.h, SymbolicLink, Directory and FileText. Add all handles on FileSystem. Add ErrorAction
+| | 
+| |  .gitignore | 1 +
+| |  1 file changed, 1 insertion(+)
+| | 
+* | commit 1b13a40157f7db9e7fe81b1f16709d7568d52a67
+|/  Author: Amit <amitash1412@gmail.com>
+|   Date:   Fri Jul 17 17:01:32 2026 +0300
+|   
+|       Add getFilePath method in FileSystem
+|   
+|    FileSystem.cpp | 19 +++++++++++++++++++
+|    FileSystem.h   |  4 +++-
+|    2 files changed, 22 insertions(+), 1 deletion(-)
+| 
+* commit 012d20e0a3f9e0f3426c4d7756cb835788fa5c84
+| Author: Amit <amitash1412@gmail.com>
+| Date:   Thu Jul 16 19:00:28 2026 +0300
+| 
+|     Add File, TextFile, Directory and SymbolicLink (unfinished) decleration tnd implementation. Add updated FileSystem
+| 
+|  FileSystem.cpp         | 30 ++++++++++++++++++++---
+|  FileSystem.h           | 23 +++++++++++------
+|  files/Directory.cpp    | 57 ++++++++++++++++++++++++++++++++++++++++++
+|  files/Directory.h      | 64 ++++++++++++++++++++----------------------------
+|  files/File.h           | 36 +++++++++++++++++++++------
+|  files/SymbolicLink.cpp | 46 ++++++++++++++++++++++++++++++++++
+|  files/SymbolicLink.h   | 23 +++++++++++++++++
+|  files/TextFile.cpp     | 43 ++++++++++++++++++++++++++++++++
+|  files/TextFile.h       |  7 +++---
+|  9 files changed, 270 insertions(+), 59 deletions(-)
+| 
+* commit 41d44161d5160dd356642454c18d3f3a197c8109
+| Author: asafsadovnik <asaf.i.cool@gmail.com>
+| Date:   Thu Jul 16 16:30:50 2026 +0300
+| 
+|     redo some .h files
+| 
+|  actions/CreateAction.h | 5 ++++-
+|  actions/DeleteAction.h | 4 +++-
+|  actions/SearchAction.h | 6 ++++--
+|  actions/WriteAction.h  | 3 +++
+|  4 files changed, 14 insertions(+), 4 deletions(-)
+| 
+* commit 7b7b42844c62e6ef29175fa88a9877caed67f393
+| Author: asafsadovnik <asaf.i.cool@gmail.com>
+| Date:   Thu Jul 16 15:57:13 2026 +0300
+| 
+|     Add Basic Actions .h and .cpp files
+| 
+|  actions/Action.cpp       | 13 +++++++++++++
+|  actions/Action.h         | 19 ++++++++++++-------
+|  actions/CreateAction.cpp |  5 +++++
+|  actions/CreateAction.h   | 13 +++++++++++++
+|  actions/DeleteAction.cpp |  5 +++++
+|  actions/DeleteAction.h   | 13 +++++++++++++
+|  actions/ExportAction.cpp |  5 +++++
+|  actions/ExportAction.h   | 10 ++++++++++
+|  actions/ImportAction.cpp |  5 +++++
+|  actions/ImportAction.h   | 12 ++++++++++++
+|  actions/ListAction.cpp   |  5 +++++
+|  actions/ListAction.h     | 13 +++++++++++++
+|  actions/ReadAction.cpp   | 21 +++++++++++++++++++++
+|  actions/ReadAction.h     | 16 ++++++++++++++++
+|  actions/SearchAction.cpp |  5 +++++
+|  actions/SearchAction.h   | 14 ++++++++++++++
+|  actions/WriteAction.cpp  |  5 +++++
+|  actions/WriteAction.h    | 13 +++++++++++++
+|  files/Directory.h        | 37 +++++++++++++++++++++++++++++++++++++
+|  19 files changed, 222 insertions(+), 7 deletions(-)
+| 
+* commit 570b30bac47f994157b1721580478cfabe4a94ee
+| Author: kareemabogazala <109505740+kareemabogazala@users.noreply.github.com>
+| Date:   Thu Jul 2 17:59:55 2026 +0300
+| 
+|     Initial commit
+| 
+|  files/File.h | 1 -
+|  1 file changed, 1 deletion(-)
+| 
+* commit ab7715fb77eba074db6643d75fe2f7f14695e9c6
+| Author: kareemabogazala <109505740+kareemabogazala@users.noreply.github.com>
+| Date:   Thu Jul 2 17:58:14 2026 +0300
+| 
+|     Initial commit
+| 
+|  README.md                |  7 +++++++
+|  tests/expected/expected1 | 11 +++++++++++
+|  tests/expected/expected2 |  8 ++++++++
+|  tests/expected/expected3 | 11 +++++++++++
+|  tests/expected/expected4 | 12 ++++++++++++
+|  tests/expected/expected5 | 22 ++++++++++++++++++++++
+|  tests/input/test_input1  |  5 +++++
+|  tests/input/test_input2  |  4 ++++
+|  tests/input/test_input3  |  5 +++++
+|  tests/input/test_input4  |  6 ++++++
+|  tests/input/test_input5  |  9 +++++++++
+|  11 files changed, 100 insertions(+)
+| 
+* commit 520fcf0b7affc1409b479a12428b814ab62a1de2
+  Author: kareemabogazala <109505740+kareemabogazala@users.noreply.github.com>
+  Date:   Thu Jul 2 17:57:07 2026 +0300
+  
+      Initial commit
+  
+   FileSystem.cpp         |  87 +++++++++++++++++++++++++++++++++
+   FileSystem.h           |  40 +++++++++++++++
+   Utilities.cpp          | 125 +++++++++++++++++++++++++++++++++++++++++++++++
+   Utilities.h            | 110 +++++++++++++++++++++++++++++++++++++++++
+   actions/Action.h       |  13 +++++
+   actions/HelpAction.cpp |  34 +++++++++++++
+   actions/HelpAction.h   |  22 +++++++++
+   files/File.h           |  62 +++++++++++++++++++++++
+   files/TextFile.h       |  35 +++++++++++++
+   main.cpp               |  12 +++++
+   10 files changed, 540 insertions(+)
