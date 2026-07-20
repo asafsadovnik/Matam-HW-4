@@ -1,4 +1,0 @@
-create textfile / notes.txt
-write / notes.txt hello world
-read / notes.txt
-exit

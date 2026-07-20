@@ -1,8 +1,0 @@
-fileSystem cmd> 
---- Action: create executed ---
-fileSystem cmd> 
---- Action: write executed ---
-fileSystem cmd> 
-hello world
---- Action: read executed ---
-fileSystem cmd> 
