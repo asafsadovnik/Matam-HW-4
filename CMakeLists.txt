@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.2)
 project(HW4_2526B)
 
 set(CMAKE_CXX_STANDARD 14)
@@ -30,4 +30,5 @@ add_executable(HW4_2526B
         actions/DeleteAction.cpp
         actions/CreateAction.cpp
         files/Directory.cpp
-        actions/ErrorAction.h)
+        actions/ErrorAction.h
+        actions/HistoryAction.h)

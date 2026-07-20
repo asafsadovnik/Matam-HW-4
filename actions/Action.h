@@ -17,6 +17,7 @@ protected:
     TextFile* resolveSymLink(const SymbolicLink* link) const; //check if symlink good & return textfile
 
 public:
+    Action() = default;
     Action(const BasicRequest&);
     virtual void execute() const = 0;
     virtual ~Action() = default;

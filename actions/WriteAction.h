@@ -8,9 +8,9 @@
 class WriteAction : public Action {
 private:
     std::string fileName;
-    std::string& text;
+    std::vector<std::string> content;
 public:
-    WriteAction(const std::string& type, const std::string& dirPath, const std::string& fileName, const std::string& text);
+    WriteAction(const WriteRequest&);
     ~WriteAction() override = default;
-    void execute() override;
+    void execute() const override;
 };
