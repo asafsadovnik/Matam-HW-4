@@ -4,16 +4,6 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "Action.h"
-#include "CreateAction.h"
-#include "DeleteAction.h"
-#include "ExportAction.h"
-#include "HelpAction.h"
-#include "ImportAction.h"
-#include "ListAction.h"
-#include "ReadAction.h"
-#include "SearchAction.h"
-#include "WriteAction.h"
 
 class Directory : public File
 {
@@ -24,6 +14,8 @@ public:
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const override;
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const override;
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const override;
+    virtual std::unique_ptr<Action> CreateImportAction(WriteRequest& request) const override;
+    virtual std::unique_ptr<Action> CreateExportAction(WriteRequest& request) const override;
 
     void  addChild(std::shared_ptr<File> newFile);
     void removeChild(const std::string& fileName);

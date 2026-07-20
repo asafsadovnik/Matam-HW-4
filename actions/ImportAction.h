@@ -6,7 +6,11 @@
 
 
 class ImportAction : public Action {
-public:
+private:
+    std::string fileName;
+    std::string targetPath;
 
-    void execute() override;
+public:
+    ImportAction(WriteRequest&);
+    void execute() const override;
 };

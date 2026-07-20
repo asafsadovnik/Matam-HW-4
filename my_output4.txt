@@ -1,0 +1,12 @@
+fileSystem cmd> 
+--- Action: create executed ---
+fileSystem cmd> 
+--- Action: create executed ---
+fileSystem cmd> 
+ - x.txt
+--- Action: list executed ---
+fileSystem cmd> 
+--- Action: delete executed ---
+fileSystem cmd> 
+--- Action: list executed ---
+fileSystem cmd> 

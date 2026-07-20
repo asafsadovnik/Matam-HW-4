@@ -8,9 +8,9 @@ class ReadAction : public Action {
 private:
     std::string fileName;
 public:
-    ReadAction(const std::string& fileType, const std::string& dirPath, const std::string& fileName);
+    ReadAction(const ReadRequest& request);
     ~ReadAction() override = default;
-    void execute() override;
+    void execute() const override;
 };
 
 
