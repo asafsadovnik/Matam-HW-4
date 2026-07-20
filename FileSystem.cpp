@@ -14,12 +14,13 @@
 #include "Directory.h"
 #include "TextFile.h"
 #include "SymbolicLink.h"
-// TODO: include the headers of the files/actions you implement
-//       (Directory.h, TextFile.h, SymbolicLink.h, FileFactory.h, your actions, ...)
 #include <iostream>
 #include <string>
 #include <memory>
 #include <stdexcept>
+
+#include "HistoryAction.h"
+#include "HelpAction.h"
 
 
 FileSystem::FileSystem()
@@ -211,30 +212,33 @@ std::unique_ptr<Action> FileSystem::handleCreate(const std::vector<std::string> 
 }
 
 std::unique_ptr<Action> FileSystem::handleDelete(const std::vector<std::string> &args) {
-    if (args.size() != 2) {
+    if (args.size() != 3) {
         return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
     }
-     std::string targetPath = args[1];
+    std::string dirPath = args[1];
+    std::string fileName = args[2];
 
-    File* targetFile = getFile(targetPath);
+    File* targetFile = getFile(dirPath);
     if (targetFile == nullptr) {
         return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
     }
 
     WriteRequest request;
-    request.TargetPath = targetPath;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
     request.command = CommandType::DELETE;
 
     return targetFile->CreateWriteAction(request);
 }
 
 std::unique_ptr<Action> FileSystem::handleSearch(const std::vector<std::string> &args) {
-    if (args.size() != 3) {
+    if (args.size() != 4) {
         return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
     }
 
     std::string dirPath = args[1];
-    std::string word = args[2];
+    std::string fileName = args[2];
+    std::string word = args[3];
 
     File* file = getFile(dirPath);
     if (file == nullptr) {
@@ -249,17 +253,83 @@ std::unique_ptr<Action> FileSystem::handleSearch(const std::vector<std::string> 
     SearchRequest request;
     request.DirPath = dirPath;
     request.word = word;
-    request.FileName = "";
+    request.FileName = fileName;
 
     return dir->CreateSearchAction(request);
 }
 
-void FileSystem::handleHistory(const std::vector<std::string> &args) {
+std::unique_ptr<Action> FileSystem::handleHistory(const std::vector<std::string> &args) {
     if (args.size() != 1) {
-        throw std::runtime_error(Utilities::commandErrorMsg());
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
     }
 
-    Utilities::printFileContent(SuccsCmndHistory);
+    return std::make_unique<HistoryAction>(SuccsCmndHistory);
+}
+
+std::unique_ptr<Action> FileSystem::handleImport(const std::vector<std::string> &args) {
+    if (args.size() != 4) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+
+    std::string PCPath = args[1];
+    std::string dirPath = args[2];
+    std::string fileName = args[3];
+
+    File* file = getFile(dirPath);
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory*>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    File* targetFile = dir->getChild(fileName);
+    if (targetFile == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    WriteRequest request;
+    request.TargetPath = PCPath;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
+    request.command = CommandType::IMPORT;
+
+    return targetFile->CreateImportAction(request);
+}
+
+std::unique_ptr<Action> FileSystem::handleExport(const std::vector<std::string> &args) {
+    if (args.size() != 4) {
+        return std::make_unique<ErrorAction>(Utilities::commandErrorMsg());
+    }
+
+    std::string dirPath = args[1];
+    std::string fileName = args[2];
+    std::string PCPath = args[3];
+
+    File* file = getFile(dirPath);
+    if (file == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    Directory* dir = dynamic_cast<Directory*>(file);
+    if (dir == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    File* targetFile = dir->getChild(fileName);
+    if (targetFile == nullptr) {
+        return std::make_unique<ErrorAction>(Utilities::FileNotFoundMsg());
+    }
+
+    WriteRequest request;
+    request.TargetPath = PCPath;
+    request.DirPath = dirPath;
+    request.FileName = fileName;
+    request.command = CommandType::EXPORT;
+
+    return targetFile->CreateExportAction(request);
 }
 
 
@@ -318,7 +388,15 @@ void FileSystem::run()
             }
             else if (cmd == "history")
             {
-                handleHistory(args);
+                action = handleHistory(args);
+            }
+            else if (cmd == "import")
+            {
+                action = handleImport(args);
+            }
+            else if (cmd == "export")
+            {
+                action = handleExport(args);
             }
             else
             {
@@ -330,13 +408,9 @@ void FileSystem::run()
                 action->execute();
                 Utilities::printActionExecuted(cmd);
 
-                if (cmd != "help") {
+                if (cmd != "help" && cmd != "history") {
                     SuccsCmndHistory.push_back(line);
                 }
-            } else if (cmd == "history") {
-                handleHistory(args);
-                Utilities::printActionExecuted(cmd);
-                SuccsCmndHistory.push_back(line);
             }
         }
         catch (const std::exception& e)

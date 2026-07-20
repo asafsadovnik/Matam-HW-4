@@ -5,6 +5,11 @@
 #include "Action.h"
 
 class ExportAction : public Action {
+private:
+    std::string fileName;
+    std::string targetPath;
+
 public:
-    void execute() override;
+    ExportAction(WriteRequest&);
+    void execute() const override;
 };

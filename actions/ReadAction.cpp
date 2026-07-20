@@ -6,6 +6,7 @@
 #include "FileSystem.h"
 #include "TextFile.h"
 #include "Directory.h"
+#include "SymbolicLink.h"
 #include "Utilities.h"
 
 ReadAction::ReadAction(const ReadRequest& request) : Action(request), fileName(request.FileName) {}

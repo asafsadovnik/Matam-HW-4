@@ -10,7 +10,7 @@ private:
     const std::vector<std::string>& historyRef;
 
 public:
-    HistoryAction(const std::vector<std::string>& history) : Action(BasicRequest()), historyRef(history) {}
+    HistoryAction(const std::vector<std::string>& history) : historyRef(history) {}
 
     void execute() const override {
         Utilities::printFileContent(historyRef);

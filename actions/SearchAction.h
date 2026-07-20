@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Action.h"
+#include <vector>
 
 class SearchAction : public Action {
 private:

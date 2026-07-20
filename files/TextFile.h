@@ -1,6 +1,5 @@
 #pragma once
 #include "File.h"
-#include "Utilities.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -24,6 +23,8 @@ public:
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const override;
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const override;
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const override;
+    virtual std::unique_ptr<Action> CreateImportAction(WriteRequest& request) const override;
+    virtual std::unique_ptr<Action> CreateExportAction(WriteRequest& request) const override;
 
     // TextFile-specific content API
     virtual void WriteContent(const std::string& content);          // append one line

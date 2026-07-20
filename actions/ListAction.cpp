@@ -5,6 +5,8 @@
 #include "ListAction.h"
 #include "FileSystem.h"
 #include "Directory.h"
+#include "SymbolicLink.h"
+#include "TextFile.h"
 
 ListAction::ListAction(const ReadRequest& request) : Action(request), fileName(request.FileName) {}
 

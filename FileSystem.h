@@ -32,8 +32,9 @@ private:
     std::unique_ptr<Action> handleCreate(const std::vector<std::string>& args);
     std::unique_ptr<Action> handleDelete(const std::vector<std::string>& args);
     std::unique_ptr<Action> handleSearch(const std::vector<std::string>& args);
-    void handleHistory(const std::vector<std::string>& args);
-
+    std::unique_ptr<Action> handleHistory(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleImport(const std::vector<std::string>& args);
+    std::unique_ptr<Action> handleExport(const std::vector<std::string>& args);
 public:
     ~FileSystem();
 

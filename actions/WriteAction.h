@@ -3,6 +3,7 @@
 //
 #pragma once
 #include "Action.h"
+#include <vector>
 
 
 class WriteAction : public Action {

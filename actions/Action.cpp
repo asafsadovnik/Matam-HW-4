@@ -5,6 +5,7 @@
 #include "Action.h"
 #include "../Utilities.h"
 #include "TextFile.h"
+#include "SymbolicLink.h"
 #include "File.h"
 #include "FileSystem.h"
 

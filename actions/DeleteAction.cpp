@@ -12,7 +12,17 @@ DeleteAction::DeleteAction(const WriteRequest& request) : Action(request), fileN
 
 void DeleteAction::execute() const {
     FileSystem& fs = FileSystem::getInstance();
-    File* deleteTarget = fs.getFile(this->dirPath + "/" + this->fileName); //get file
+
+    File* parentFile = fs.getFile(this->dirPath); //get parent file
+    if (parentFile == nullptr) {
+        throw std::runtime_error(Utilities::FileNotFoundMsg());
+    }
+    Directory* parentDir = dynamic_cast<Directory*>(parentFile); //make sure its dir
+    if (parentDir == nullptr) {
+        throw std::runtime_error(Utilities::FileNotFoundMsg());
+    }
+
+    File* deleteTarget = parentDir->getChild(this->fileName); //get file
     if (deleteTarget == nullptr) {
         throw std::runtime_error(Utilities::FileNotFoundMsg()); //check if file exists
     }
@@ -22,7 +32,7 @@ void DeleteAction::execute() const {
     if (dir != nullptr && !dir->getChildes().empty()) { //if its dir that is not empty, dont delete
         throw std::runtime_error(Utilities::DirectoryNotEmptyMsg());
     }
-    Directory* parentDir = deleteTarget->getParent();
+
     if (parentDir != nullptr) {
         parentDir->removeChild(this->fileName);
     }

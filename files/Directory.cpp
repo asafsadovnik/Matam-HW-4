@@ -41,6 +41,15 @@ std::unique_ptr<Action> Directory::CreateWriteAction(WriteRequest &request) cons
 std::unique_ptr<Action> Directory::CreateSearchAction(SearchRequest &request) const {
         return std::make_unique<SearchAction>(request);
 }
+
+std::unique_ptr<Action> Directory::CreateImportAction(WriteRequest& request) const {
+    return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
+}
+
+std::unique_ptr<Action> Directory::CreateExportAction(WriteRequest& request) const {
+    return std::make_unique<ErrorAction>(Utilities::TypeErrorMsg());
+}
+
 void Directory::addChild(std::shared_ptr<File> newFile) {
     directoryChildren.push_back(newFile);
 }

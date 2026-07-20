@@ -39,6 +39,14 @@ std::unique_ptr<Action> TextFile::CreateSearchAction(SearchRequest &request) con
     return std::make_unique<SearchAction>(request);
 }
 
+std::unique_ptr<Action> TextFile::CreateExportAction(WriteRequest& request) const {
+    return std::make_unique<ExportAction>(request);
+}
+
+std::unique_ptr<Action> TextFile::CreateImportAction(WriteRequest& request) const {
+    return std::make_unique<ImportAction>(request);
+}
+
 void TextFile::WriteContent(const std::string &content) {
     fileContent.push_back(content);
 }

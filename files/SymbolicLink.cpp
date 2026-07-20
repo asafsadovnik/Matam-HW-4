@@ -66,4 +66,12 @@ std::unique_ptr<Action> SymbolicLink::CreateSearchAction(SearchRequest &request)
     return targetFile->CreateSearchAction(request);
 }
 
+std::unique_ptr<Action> SymbolicLink::CreateImportAction(WriteRequest& request) const {
+    return std::make_unique<ImportAction>(request);
+}
+
+std::unique_ptr<Action> SymbolicLink::CreateExportAction(WriteRequest& request) const {
+    return std::make_unique<ExportAction>(request);
+}
+
 

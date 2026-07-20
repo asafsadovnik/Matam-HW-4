@@ -1,11 +1,11 @@
 #pragma once
 #include <memory>
 #include <string>
-#include "TextFile.h"
-#include "SymbolicLink.h"
+#include "File.h"
 
 
-
+class TextFile; //forward declaration
+class SymbolicLink;
 
 //declaration of different actions: each ctor takes arguments based on requirements
 

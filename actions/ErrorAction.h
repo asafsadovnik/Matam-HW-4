@@ -7,7 +7,7 @@ class ErrorAction : public Action {
 private:
     std::string errorMsg;
 public:
-    ErrorAction(const std::string& msg) : Action(BasicRequest()), errorMsg(msg) {}
+    ErrorAction(const std::string& msg) : errorMsg(msg) {}
 
     void execute() const override {
         Utilities::printError(errorMsg);
