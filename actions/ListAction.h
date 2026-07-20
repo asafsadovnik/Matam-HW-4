@@ -3,11 +3,15 @@
 //
 #pragma once
 #include "Action.h"
+#include "File.h"
 
 
 class ListAction : public Action {
+private:
+    std::string fileName;
+
 public:
-    ListAction(std::string& dirPath);
+    ListAction(const ReadRequest&);
     ~ListAction() override = default;
-    void execute() override;
+    void execute() const override;
 };

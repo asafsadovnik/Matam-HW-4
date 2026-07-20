@@ -1,6 +1,0 @@
-create directory / d
-create textfile /d x.txt
-list /d
-delete /d x.txt
-list /d
-exit

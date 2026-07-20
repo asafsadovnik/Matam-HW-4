@@ -1,14 +1,4 @@
 #pragma once
-#include "Action.h"
-#include "CreateAction.h"
-#include "DeleteAction.h"
-#include "ExportAction.h"
-#include "HelpAction.h"
-#include "ImportAction.h"
-#include "ListAction.h"
-#include "ReadAction.h"
-#include "SearchAction.h"
-#include "WriteAction.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -29,9 +19,9 @@ feel free to add more forward declarations if you need them or change existing o
 // Tip: think about what information each Create*Action must hand to its Action.
 // ─────────────────────────────────────────────────────────────────────────────
 class Directory; //Forward declaration
+class Action;
 
-
-enum class CommandType { CREATE , DELETE , LIST , READ , WRITE , SEARCH };
+enum class CommandType { CREATE , DELETE , LIST , READ , WRITE , SEARCH , IMPORT , EXPORT};
 
 struct BasicRequest {
     std::string DirPath;
@@ -79,15 +69,14 @@ public:
 
     std::string getName() const {return name ; }
     Directory* getParent() const {return parentDirectory ; }
-
-    virtual bool isDirectory() const {
-        return false;
-    }
+    virtual bool isDirectory() const { return false; }
 
     // Each concrete File builds the Action appropriate for its own type.
     virtual std::unique_ptr<Action> CreateReadAction(ReadRequest& request) const = 0;
     virtual std::unique_ptr<Action> CreateWriteAction(WriteRequest& request) const = 0;
     virtual std::unique_ptr<Action> CreateSearchAction(SearchRequest& request) const = 0;
+    virtual std::unique_ptr<Action> CreateImportAction(WriteRequest& request) const = 0;
+    virtual std::unique_ptr<Action> CreateExportAction(WriteRequest& request) const = 0;
 
 
 };

@@ -1,9 +1,0 @@
-create textfile / poem.txt
-write / poem.txt the cat sat
-write / poem.txt the dog ran
-write / poem.txt the cat slept
-write / poem.txt birds fly high
-search / poem.txt cat
-search / poem.txt the
-search / poem.txt fish
-exit
