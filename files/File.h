@@ -62,8 +62,9 @@ protected:
     std::string name;
 
 public:
-    File(const std::string& name , Directory* parentDir) : name(name) ,
-        parentDirectory(parentDir) {}
+    File(const std::string& name , Directory* parentDir) : parentDirectory(parentDir) ,
+    name(name) {}
+
 
     virtual ~File() = default;
 
